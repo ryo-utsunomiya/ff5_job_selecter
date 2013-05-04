@@ -3,24 +3,22 @@
 <head>
     <meta charset="utf-8">
     <title>FF5ジョブ選択機</title>
-
-
 </head>
 <body>
 <form name="selectJobs">
     <fieldset>
-    <legend>ジョブの範囲を選択</legend>
-    <p><label><input type="checkbox">風のクリスタル</label></p>
-    <p><label><input type="checkbox">水のクリスタル</label></p>
-    <p><label><input type="checkbox">火のクリスタル</label></p>
-    <p><label><input type="checkbox">土のクリスタル</label></p>
-    <p><label><input type="checkbox">GBA追加ジョブ</label></p>
-    <p><label><input type="checkbox">すっぴん・ものまね士</label></p>
+        <legend>ジョブの範囲を選択</legend>
+        <p><label><input type="checkbox" checked>風のクリスタル</label></p>
+        <p><label><input type="checkbox" checked>水のクリスタル</label></p>
+        <p><label><input type="checkbox" checked>火のクリスタル</label></p>
+        <p><label><input type="checkbox" checked>土のクリスタル</label></p>
+        <p><label><input type="checkbox">GBA追加ジョブ</label></p>
+        <p><label><input type="checkbox">すっぴん・ものまね士</label></p>
     </fieldset>
-    <input type="button" value="ジョブをランダムに選択" id="chk"/>
+    <input value="ジョブをランダムに選択" id="chk" type="button">
 </form>
 <output></output>
-<script type="text/javascript">
+<script>
     // min以上max以下のランダムな整数値を返す
     function getRandomInt(min, max) {
         return Math.floor( Math.random() * (max - min + 1) ) + min;
@@ -65,16 +63,26 @@
             var characters = ['バッツ', 'レナ', 'ガラフ/クルル', 'ファリス'];
             var rand = [];
             var rand_num;
-            var Ok_flag = true;
 
-            for (i = 0; i < characters.length; i++) {
-                Ok_flag = true;
+            while (rand.length < 4) {
                 rand_num = getRandomInt(0, (selected_jobs.length - 1));
-                [].push.apply(rand, [rand_num]);
+                if (!checkDuplicateJob(rand_num, rand)) {
+                    [].push.apply(rand, [rand_num]);
+                }
+            }
+
+            function checkDuplicateJob(rand_num, rand_array) {
+                for (var i = 0; i < rand_array.length; i++) {
+                    if (rand_array[i] === rand_num) {
+                        console.log(rand_num);
+                        return true;
+                    }
+                }
+                return false;
             }
 
             for (i = 0; i < characters.length; i++) {
-                ele.innerHTML += characters[i] + "：" + selected_jobs[rand[i]] + "<br>";
+                ele.innerHTML += characters[i] + "：" + selected_jobs[rand[i]] + '<br>';
             }
 
             // デフォルトイベントを禁止
